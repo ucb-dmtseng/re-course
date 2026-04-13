@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import EnrollModal from '@/components/EnrollModal'
 
 const MODULES = [
   { num: '01', title: 'License Foundations', desc: 'National real estate law, agency relationships, contracts, and the framework for all 50 states.' },
@@ -68,12 +69,19 @@ const PLANS = [
 export default function Home() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [modalPlan, setModalPlan] = useState('pro')
+
+  function openEnroll(plan = 'pro') {
+    setModalPlan(plan)
+    setShowModal(true)
+  }
 
   function handleSignup(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
-    // TODO: wire to DB/email
     setSubmitted(true)
+    openEnroll('pro')
   }
 
   return (
@@ -89,7 +97,7 @@ export default function Home() {
             <li><a href="#curriculum">Curriculum</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#cohort">Next Cohort</a></li>
-            <li><a href="#cohort"><button className="btn-gold" style={{ padding: '10px 22px', fontSize: '0.85rem' }}>Enroll Now</button></a></li>
+            <li><button className="btn-gold" style={{ padding: '10px 22px', fontSize: '0.85rem' }} onClick={() => openEnroll('pro')}>Enroll Now</button></li>
           </ul>
         </div>
       </nav>
@@ -115,7 +123,7 @@ export default function Home() {
           </p>
 
           <div className="hero-cta">
-            <a href="#cohort"><button className="btn-gold">Reserve Your Spot →</button></a>
+            <button className="btn-gold" onClick={() => openEnroll('pro')}>Reserve Your Spot →</button>
             <a href="#curriculum"><button className="btn-outline">See Curriculum</button></a>
           </div>
 
@@ -236,11 +244,13 @@ export default function Home() {
                   ))}
                 </ul>
 
-                <a href="#cohort">
-                  <button className={plan.featured ? 'btn-gold' : 'btn-outline'} style={{ width: '100%', justifyContent: 'center' }}>
-                    {plan.cta}
-                  </button>
-                </a>
+                <button
+                  className={plan.featured ? 'btn-gold' : 'btn-outline'}
+                  style={{ width: '100%', justifyContent: 'center' }}
+                  onClick={() => openEnroll(plan.name.toLowerCase())}
+                >
+                  {plan.cta}
+                </button>
               </div>
             ))}
           </div>
@@ -267,23 +277,12 @@ export default function Home() {
               your Slack invite, and a pre-cohort prep guide before day one.
             </p>
 
-            {submitted ? (
-              <div style={{ marginTop: 32, padding: '20px 28px', background: 'rgba(201,168,76,0.1)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--gold2)', fontWeight: 600 }}>
-                ✓ You&apos;re on the list! Check your email for next steps.
-              </div>
-            ) : (
-              <form className="signup-form" onSubmit={handleSignup}>
-                <input
-                  className="signup-input"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
-                />
-                <button type="submit" className="btn-gold">Reserve Spot →</button>
-              </form>
-            )}
+            <div style={{ marginTop: 32 }}>
+              <button className="btn-gold" style={{ fontSize: '1rem', padding: '16px 40px' }} onClick={() => openEnroll('pro')}>
+                Reserve Your Spot →
+              </button>
+              <p style={{ marginTop: 12, fontSize: '0.78rem', color: 'var(--muted)' }}>Takes 2 minutes · No payment until cohort starts</p>
+            </div>
 
             <p style={{ marginTop: 16, fontSize: '0.78rem', color: 'var(--muted)' }}>
               No payment until cohort starts. Unsubscribe anytime.
@@ -307,6 +306,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      {showModal && <EnrollModal onClose={() => setShowModal(false)} initialPlan={modalPlan} />}
     </>
   )
 }
