@@ -22,22 +22,25 @@ const COHORTS = [
 const PLANS = [
   {
     key: 'starter',
-    name: 'Starter',
+    name: 'Level 1 — Get Licensed',
     price: '$97/mo',
-    features: ['License course', 'Community access', 'Monthly kickoff call'],
+    features: ['Pre-license course', 'Community access', 'Monthly kickoff call'],
+    color: '#6ee7b7',
   },
   {
     key: 'pro',
-    name: 'Pro',
+    name: 'Level 2 — Close Deals',
     price: '$197/mo',
-    features: ['Everything in Starter', 'AI deal analyzer', 'Weekly live Q&As'],
+    features: ['Everything in L1', 'AI deal analyzer', 'Weekly live Q&As', 'Deal workshop'],
     featured: true,
+    color: '#c9a84c',
   },
   {
     key: 'vip',
-    name: 'VIP',
+    name: 'Level 3 — Build a Team',
     price: '$397/mo',
-    features: ['Everything in Pro', '1:1 coaching/month', 'Deal review sessions'],
+    features: ['Everything in L2', 'Revenue share training', '1:1 coaching/month', 'Recruit playbook'],
+    color: '#a78bfa',
   },
 ]
 
@@ -224,7 +227,7 @@ export default function EnrollModal({ onClose, initialPlan = 'pro' }: Props) {
                     transition: 'all 0.15s',
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: p.featured ? 'var(--gold2)' : 'var(--offwhite)' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: p.color ?? 'var(--offwhite)' }}>
                         {p.name} {p.featured && <span style={{ fontSize: '0.65rem', background: 'var(--gold)', color: 'var(--navy)', padding: '2px 8px', borderRadius: 100, marginLeft: 8, fontWeight: 800 }}>POPULAR</span>}
                       </span>
                       <span style={{ fontWeight: 700, color: 'var(--gold2)' }}>{p.price}</span>

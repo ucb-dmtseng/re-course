@@ -3,66 +3,111 @@
 import { useState } from 'react'
 import EnrollModal from '@/components/EnrollModal'
 
-const MODULES = [
-  { num: '01', title: 'License Foundations', desc: 'National real estate law, agency relationships, contracts, and the framework for all 50 states.' },
-  { num: '02', title: 'Property & Ownership', desc: 'Forms of ownership, land descriptions, deeds, title, and encumbrances.' },
-  { num: '03', title: 'Financing & Mortgages', desc: 'Loan types, mortgage math, DSCR, underwriting basics, and how lenders think.' },
-  { num: '04', title: 'Valuation & Appraisal', desc: 'CMA, income approach, cap rates, GRM — how to price any property with confidence.' },
-  { num: '05', title: 'Investment Analysis', desc: 'IRR, cash-on-cash, pro forma modeling, ADU/SB9 analysis using real parcel data.' },
-  { num: '06', title: 'Contracts & Closing', desc: 'Purchase agreements, contingencies, escrow, title insurance, and the closing process.' },
-  { num: '07', title: 'California Deep Dive', desc: 'SB 9, AB 1033, ADU rules, permit process, and city-by-city development strategy.' },
-  { num: '08', title: 'Deal Analysis Workshop', desc: 'Live deal reviews using the re:invest tool. Post your own deals for group feedback.' },
+const LEVELS = [
+  {
+    num: '01',
+    tag: 'Level 1',
+    title: 'Get Licensed',
+    subtitle: '0–6 months · Brand new to real estate',
+    color: '#6ee7b7',
+    modules: [
+      { num: '01', title: 'License Foundations', desc: 'National real estate law, agency relationships, contracts, and the framework for all 50 states.' },
+      { num: '02', title: 'Property & Ownership', desc: 'Forms of ownership, land descriptions, deeds, title, and encumbrances.' },
+      { num: '03', title: 'Financing & Mortgages', desc: 'Loan types, mortgage math, DSCR, underwriting basics, and how lenders think.' },
+      { num: '04', title: 'Exam Prep & State Test', desc: 'Practice exams, flashcards, and test-taking strategy. Pass on your first attempt.' },
+    ],
+  },
+  {
+    num: '02',
+    tag: 'Level 2',
+    title: 'Close Deals',
+    subtitle: 'Newly licensed · 0–2 years in',
+    color: '#c9a84c',
+    modules: [
+      { num: '05', title: 'Valuation & Deal Analysis', desc: 'CMA, income approach, cap rates, GRM — price any property with confidence.' },
+      { num: '06', title: 'Contracts & Closing', desc: 'Purchase agreements, contingencies, escrow, title insurance, and the closing process.' },
+      { num: '07', title: 'Investment Fundamentals', desc: 'IRR, cash-on-cash, pro forma modeling, ADU/SB9 analysis using real parcel data.' },
+      { num: '08', title: 'Deal Workshop', desc: 'Live deal reviews using the re:invest AI tool. Post your own deals for group feedback.' },
+    ],
+  },
+  {
+    num: '03',
+    tag: 'Level 3',
+    title: 'Build a Team',
+    subtitle: '2+ years · Ready to scale',
+    color: '#a78bfa',
+    modules: [
+      { num: '09', title: 'Agent Recruiting & Sponsorship', desc: 'How to attract, onboard, and retain agents. Build a downline that generates passive income.' },
+      { num: '10', title: 'Revenue Share Strategy', desc: 'Maximize your eXp revenue share tiers. Model your passive income with real numbers.' },
+      { num: '11', title: 'Team Operations & Culture', desc: 'Build systems, accountability, and culture so your team runs without you.' },
+      { num: '12', title: 'Scale & Exit', desc: 'From team lead to portfolio owner. How to own the assets your team is selling.' },
+    ],
+  },
 ]
 
 const PLANS = [
   {
-    name: 'Starter',
+    name: 'Level 1',
+    label: 'Get Licensed',
     price: '$97',
     period: '/mo',
-    desc: 'Get licensed and join the community.',
+    desc: 'Get your license. Join the community. Start from zero.',
+    color: '#6ee7b7',
     features: [
       { text: 'Pre-license course (your state)', active: true },
       { text: 'CE Shop state-approved content', active: true },
-      { text: 'Private Slack community', active: true },
+      { text: 'Private community access', active: true },
       { text: 'Monthly cohort kickoff call', active: true },
-      { text: 'AI deal analyzer', active: false },
+      { text: 'AI deal analyzer (re:invest)', active: false },
+      { text: 'Weekly live Q&A sessions', active: false },
       { text: '1:1 coaching session', active: false },
+      { text: 'Revenue share training', active: false },
     ],
-    cta: 'Join Next Cohort',
+    cta: 'Start Level 1 →',
     featured: false,
+    planKey: 'starter',
   },
   {
-    name: 'Pro',
+    name: 'Level 2',
+    label: 'Close Deals',
     price: '$197',
     period: '/mo',
-    desc: 'For serious investors and agents.',
+    desc: 'Licensed and ready to close deals and analyze investments.',
+    color: '#c9a84c',
     features: [
-      { text: 'Pre-license course (your state)', active: true },
-      { text: 'CE Shop state-approved content', active: true },
-      { text: 'Private Slack community', active: true },
-      { text: 'Monthly cohort kickoff call', active: true },
+      { text: 'Everything in Level 1', active: true },
+      { text: 'Investment analysis training', active: true },
       { text: 'AI deal analyzer (re:invest)', active: true },
-      { text: 'Live weekly Q&A sessions', active: true },
+      { text: 'Weekly live Q&A sessions', active: true },
+      { text: 'Deal posting & group review', active: true },
+      { text: 'CE renewal included', active: true },
       { text: '1:1 coaching session', active: false },
+      { text: 'Revenue share training', active: false },
     ],
-    cta: 'Join Pro Cohort',
+    cta: 'Start Level 2 →',
     featured: true,
+    planKey: 'pro',
   },
   {
-    name: 'VIP',
+    name: 'Level 3',
+    label: 'Build a Team',
     price: '$397',
     period: '/mo',
-    desc: 'Accelerate with personal mentorship.',
+    desc: 'Scale your business. Build passive income through your team.',
+    color: '#a78bfa',
     features: [
-      { text: 'Everything in Pro', active: true },
+      { text: 'Everything in Level 2', active: true },
+      { text: 'Agent recruiting masterclass', active: true },
+      { text: 'Revenue share strategy (eXp)', active: true },
       { text: '1:1 coaching session/month', active: true },
-      { text: 'Deal review & feedback', active: true },
-      { text: 'Direct Slack access to instructor', active: true },
-      { text: 'CE renewal included', active: true },
+      { text: 'Direct instructor access', active: true },
       { text: 'Investor network introductions', active: true },
+      { text: 'Team ops & culture playbook', active: true },
+      { text: 'Scale & exit strategy', active: true },
     ],
-    cta: 'Apply for VIP',
+    cta: 'Apply for Level 3 →',
     featured: false,
+    planKey: 'vip',
   },
 ]
 
@@ -111,15 +156,13 @@ export default function Home() {
           </div>
 
           <h1 className="display">
-            Get licensed.<br />
-            <span className="gold">Invest smarter.</span><br />
-            In any state.
+            License. Deals.<br />
+            <span className="gold">Team. Passive income.</span>
           </h1>
 
           <p className="subhead" style={{ marginTop: 24 }}>
-            A monthly cohort program that gets you your real estate license 
-            <em> and</em> teaches you to analyze investment deals like a pro — 
-            across all 50 states.
+            A 3-level program that takes you from zero license to running a 
+            team with passive revenue share income — across all 50 states.
           </p>
 
           <div className="hero-cta">
@@ -129,20 +172,20 @@ export default function Home() {
 
           <div className="hero-stats">
             <div className="stat-item">
+              <div className="num">3</div>
+              <div className="label">Learning levels</div>
+            </div>
+            <div className="stat-item">
               <div className="num">50</div>
               <div className="label">States covered</div>
             </div>
             <div className="stat-item">
-              <div className="num">8</div>
+              <div className="num">12</div>
               <div className="label">Course modules</div>
             </div>
             <div className="stat-item">
               <div className="num">Monthly</div>
               <div className="label">New cohorts</div>
-            </div>
-            <div className="stat-item">
-              <div className="num">Live</div>
-              <div className="label">Community + AI tools</div>
             </div>
           </div>
         </div>
@@ -182,24 +225,68 @@ export default function Home() {
 
       <hr className="divider" />
 
+      {/* ── How it works ── */}
+      <section className="section" id="how">
+        <div className="container">
+          <div className="section-label">The Path</div>
+          <h2 className="section-title">Three levels. One flywheel.</h2>
+          <p className="section-sub">Each level unlocks the next income stream. Most programs stop at Level 1.</p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, marginTop: 48, position: 'relative' }}>
+            {[
+              { color: '#6ee7b7', level: 'Level 1', title: 'Get Licensed', icon: '🎓', desc: 'Pass your state exam. Start earning commission. Join eXp under your sponsor.', income: 'Commission income begins' },
+              { color: '#c9a84c', level: 'Level 2', title: 'Close Deals', icon: '🏠', desc: 'Analyze and close investment deals. Build your client base. Earn CE credits.', income: 'Deal income + renewals' },
+              { color: '#a78bfa', level: 'Level 3', title: 'Build a Team', icon: '♾️', desc: 'Recruit agents under you. Earn eXp revenue share on their production — forever.', income: 'Passive revenue share' },
+            ].map((step, i) => (
+              <div key={i} style={{ padding: '32px 28px', borderTop: `3px solid ${step.color}`, background: 'rgba(255,255,255,0.02)', position: 'relative' }}>
+                <div style={{ fontSize: '2rem', marginBottom: 16 }}>{step.icon}</div>
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: step.color, marginBottom: 6 }}>{step.level}</div>
+                <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 10 }}>{step.title}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.65, marginBottom: 16 }}>{step.desc}</div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 600, color: step.color, background: `${step.color}18`, padding: '6px 12px', borderRadius: 100, display: 'inline-block' }}>
+                  {step.income}
+                </div>
+                {i < 2 && <div style={{ position: 'absolute', right: -16, top: '50%', fontSize: '1.2rem', color: 'var(--muted)', zIndex: 1, display: 'none' }}>→</div>}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 32, padding: '20px 28px', background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.2)', borderRadius: 10, fontSize: '0.88rem', color: 'var(--muted)', lineHeight: 1.7 }}>
+            💡 <strong style={{ color: 'var(--gold2)' }}>The compounding effect:</strong> A Level 3 student who recruits 10 agents each closing 6 deals/year earns <strong style={{ color: 'var(--offwhite)' }}>~$5,250/year in passive revenue share</strong> — on top of their own commission income. That number grows every time one of their agents recruits someone new.
+          </div>
+        </div>
+      </section>
+
+      <hr className="divider" />
+
       {/* ── Curriculum ── */}
       <section className="section" id="curriculum">
         <div className="container">
           <div className="section-label">Curriculum</div>
-          <h2 className="section-title">8 modules. License + investing.</h2>
+          <h2 className="section-title">3 levels. 12 modules.</h2>
           <p className="section-sub">
-            State-required content covers the first 5 modules. 
-            Modules 6–8 are our proprietary investment training — 
-            the part no other license school teaches.
+            Each level builds on the last. Start wherever you are.
+            Most students begin at Level 1 and move up as they grow.
           </p>
 
-          <div className="curriculum-grid">
-            {MODULES.map((m) => (
-              <div key={m.num} className="module-card">
-                <div className="module-num">{m.num}</div>
-                <div>
-                  <div className="module-title">{m.title}</div>
-                  <div className="module-desc">{m.desc}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 40, marginTop: 48 }}>
+            {LEVELS.map((level) => (
+              <div key={level.num} style={{ borderLeft: `3px solid ${level.color}`, paddingLeft: 28 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: level.color }}>{level.tag}</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>{level.subtitle}</span>
+                </div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 20 }}>{level.title}</h3>
+                <div className="curriculum-grid">
+                  {level.modules.map((m) => (
+                    <div key={m.num} className="module-card">
+                      <div className="module-num" style={{ color: level.color }}>{m.num}</div>
+                      <div>
+                        <div className="module-title">{m.title}</div>
+                        <div className="module-desc">{m.desc}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
@@ -213,10 +300,10 @@ export default function Home() {
       <section className="section" id="pricing">
         <div className="container">
           <div className="section-label">Pricing</div>
-          <h2 className="section-title">Simple monthly pricing.</h2>
+          <h2 className="section-title">One price per level.</h2>
           <p className="section-sub">
-            Everything month-to-month. Cancel anytime. 
-            Course content included — no separate license school fee.
+            Start at Level 1 and move up when you’re ready. 
+            Month-to-month, cancel anytime. License course included.
           </p>
 
           <div className="pricing-grid">
@@ -224,8 +311,11 @@ export default function Home() {
               <div key={plan.name} className={`pricing-card ${plan.featured ? 'featured' : ''}`}>
                 {plan.featured && <div className="pricing-badge">Most Popular</div>}
 
-                <div style={{ marginBottom: 8, fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.featured ? 'var(--gold)' : 'var(--muted)' }}>
+                <div style={{ marginBottom: 4, fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: plan.color }}>
                   {plan.name}
+                </div>
+                <div style={{ marginBottom: 8, fontSize: '0.78rem', fontWeight: 700, color: plan.featured ? 'var(--offwhite)' : 'var(--muted)' }}>
+                  {plan.label}
                 </div>
 
                 <div style={{ marginBottom: 12 }}>
@@ -247,7 +337,7 @@ export default function Home() {
                 <button
                   className={plan.featured ? 'btn-gold' : 'btn-outline'}
                   style={{ width: '100%', justifyContent: 'center' }}
-                  onClick={() => openEnroll(plan.name.toLowerCase())}
+                  onClick={() => openEnroll(plan.planKey)}
                 >
                   {plan.cta}
                 </button>
